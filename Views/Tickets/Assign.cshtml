@@ -1,0 +1,27 @@
+﻿@model jcamacho_bugtracker.Models.AssignUsersViewModel
+
+@{
+    ViewBag.Title = "Ticket Assignment";
+}
+
+<h2>Assign Ticket</h2>
+
+@using (Html.BeginForm("Assign", "Tickets", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div>
+        <strong>Project Name</strong><br />
+        @Model.Ticket.Title
+        <br />
+        @Html.HiddenFor(model => model.Project.Id, new { })
+        <br />
+        @Html.ListBox("SelectedUsers", Model.Users, htmlAttributes: new { id = "mySelect" })
+        <br />
+        <br />
+        <button class="btn btn-default" type="submit">Assign to Ticket</button>
+    </div>
+}
+
+<a class="btn btn-default" href="@Url.Action("Index", "Home")">Back to List</a>
+
+
+

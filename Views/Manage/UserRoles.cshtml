@@ -1,0 +1,29 @@
+﻿@model jcamacho_bugtracker.Models.AdminUpdateRolesViewModel
+
+@{
+    ViewBag.Title = "Manage Roles";
+}
+
+@using (Html.BeginForm("UserRoles", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div>
+        <strong>User:</strong>
+        <h3>@Model.DisplayName</h3>
+        @Html.HiddenFor(model => model.Id, new { })
+        <br />
+        <form>
+            <div class="form-group">
+                <label>Assign to:</label>
+                @Html.ListBox("SelectedRoles", Model.Roles, htmlAttributes: new { @class = "form-control", id = "mySelect", size = "8" })
+            </div>
+        </form>
+        <ul class="list-inline">
+            <li>
+                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Update Roles</button>
+            </li>
+            <li>
+                <a href="@Url.Action("UserList", "Manage")" class="btn btn-danger"> <i class="fa fa-ban"></i> Cancel</a>
+            </li>
+        </ul>
+    </div>
+}

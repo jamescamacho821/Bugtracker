@@ -1,0 +1,286 @@
+﻿@model jcamacho_bugtracker.Models.DashboardViewModel
+
+@{
+    ViewBag.Title = "Ticket Index";
+}
+
+@if (User.IsInRole("Administrator"))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    All Tickets
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-assignTicks">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">Title <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-3">Description <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Created <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Status <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Priority <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Project <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Assigned to <i class="fa fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model.AllTickets.OrderBy(t => t.Title))
+                                    {
+                                        if (item.IsDeleted == false)
+                                        {
+                                            <tr>
+                                                <td class="col-sm-2">
+                                                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">@Html.DisplayFor(modelItem => item.Title)</a>
+                                                </td>
+                                                <td class="col-sm-3">
+                                                    @Html.DisplayFor(modelItem => item.Body)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketPriorities.Name)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("Project Manager"))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    All Tickets on Projects Assigned to @User.Identity.Name
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-assignTicksPM">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">Title <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-3">Description <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Created <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Status <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Priority <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Project <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Assigned to <i class="fa fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model.RelevantTickets.OrderBy(t => t.Title))
+                                    {
+                                        if (item.IsDeleted == false)
+                                        {
+                                            <tr>
+                                                <td class="col-sm-2">
+                                                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">@Html.DisplayFor(modelItem => item.Title)</a>
+                                                </td>
+                                                <td class="col-sm-3">
+                                                    @Html.DisplayFor(modelItem => item.Body)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketPriorities.Name)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("Submitter") && (!User.IsInRole("Administrator") && !User.IsInRole("Project Manager")))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Tickets Assigned to @User.Identity.Name
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-subTicks">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">Title <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-3">Description <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Created <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Status <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Priority <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Project <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Assigned to <i class="fa fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model.RelevantTickets.OrderBy(t => t.Title))
+                                    {
+                                        if (item.IsDeleted == false)
+                                        {
+                                            <tr>
+                                                <td class="col-sm-2">
+                                                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">@Html.DisplayFor(modelItem => item.Title)</a>
+                                                </td>
+                                                <td class="col-sm-3">
+                                                    @Html.DisplayFor(modelItem => item.Body)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketPriorities.Name)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("Developer") && (!User.IsInRole("Administrator") && !User.IsInRole("Project Manager")))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Tickets Assigned to @User.Identity.Name
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-devTicks">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">Title <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-3">Description <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Created <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Status <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-1">Priority <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Project <i class="fa fa-sort"></i></th>
+                                    <th class="col-sm-2">Assigned to <i class="fa fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model.RelevantTickets.OrderBy(t => t.Title))
+                                    {
+                                        if (item.IsDeleted == false)
+                                        {
+                                            <tr>
+                                                <td class="col-sm-2">
+                                                    <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">@Html.DisplayFor(modelItem => item.Title)</a>
+                                                </td>
+                                                <td class="col-sm-3">
+                                                    @Html.DisplayFor(modelItem => item.Body)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
+                                                </td>
+                                                <td class="col-sm-1">
+                                                    @Html.DisplayFor(modelItem => item.TicketPriorities.Name)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                                                </td>
+                                                <td class="col-sm-2">
+                                                    @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="Template/assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="Template/assets/js/bootstrap.min.js"></script>
+<!-- Metis Menu Js -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- DATA TABLE SCRIPTS -->
+<script src="Template/assets/js/dataTables/jquery.dataTables.js"></script>
+<script src="Template/assets/js/dataTables/dataTables.bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTables-assignTicks').dataTable();
+    });
+    $(document).ready(function () {
+        $('#dataTables-assignTicksPM').dataTable();
+    });
+    $(document).ready(function () {
+        $('#dataTables-subTicks').dataTable();
+    });
+    $(document).ready(function () {
+        $('#dataTables-devTicks').dataTable();
+    });
+</script>
+<!-- Custom Js -->
+<script src="Template/assets/js/custom-scripts.js"></script>

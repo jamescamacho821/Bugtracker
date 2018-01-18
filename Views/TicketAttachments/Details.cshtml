@@ -1,0 +1,91 @@
+﻿@model jcamacho_bugtracker.Models.TicketAttachment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TicketAttachment</h4>
+    <hr />@Html.HiddenFor(model => model.TicketId)
+    <dl class="dl-horizontal">
+        @if (Model.FilePath != null)
+        {
+            <dt>
+                @*URL:*@
+            </dt>
+            <dd>
+                @if (Model.FilePath != "")
+                {
+                    <img src="@Model.FilePath" alt="Attachment" width="300px" />
+                }
+                <img src="@Model.FileName" class="post-meta img-responsive" />
+                
+                    <a href="@(Url.Content("~/Content/Uploads/" + Model.FileName))">@Model.FileName</a>
+            </dd>
+        }
+        
+        <dt>
+           @Html.DisplayNameFor(model => model.Author.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ticket.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ticket.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FilePath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FilePath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FileUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index",new { id = Model.TicketId })
+</p>

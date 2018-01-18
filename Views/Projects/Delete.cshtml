@@ -1,0 +1,156 @@
+﻿@*@model jcamacho_bugtracker.Models.Project
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    @*    <dt>
+            @Html.DisplayNameFor(model => model.Manager.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Manager.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>*@
+
+
+@model jcamacho_bugtracker.Models.Project
+
+@{
+    ViewBag.Title = "Delete Project";
+}
+
+<h3><i>@Html.DisplayFor(model => model.ProjectName)</i> cannot be archived because it has open tickets.</h3>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Please resolve all open tickets before removing the project:
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-deleteTicks">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-2">Title <i class="fa fa-sort"></i></th>
+                                <th class="col-sm-3">Description <i class="fa fa-sort"></i></th>
+                                <th class="col-sm-1">Created <i class="fa fa-sort"></i></th>
+                                <th class="col-sm-1">Status <i class="fa fa-sort"></i></th>
+                                <th class="col-sm-1">Priority <i class="fa fa-sort"></i></th>
+                                <th class="col-sm-2">Project <i class="fa fa-sort"></i></th>
+                                <th class="col-sm-2">Assigned to <i class="fa fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Tickets)
+                            {
+                                <tr>
+                                    <td class="col-sm-2">
+                                        <a href="@Url.Action("Edit", "Tickets", new { id = item.Id })">@Html.DisplayFor(modelItem => item.Title)</a>
+                                    </td>
+                                    <td class="col-sm-3">
+                                        @Html.DisplayFor(modelItem => item.Body)
+                                    </td>
+                                    <td class="col-sm-1">
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                                    </td>
+                                    <td class="col-sm-1">
+                                        @Html.DisplayFor(modelItem => item.TicketStatuses.Name)
+                                    </td>
+                                    <td class="col-sm-1">
+                                        @Html.DisplayFor(modelItem => item.TicketPriorities.Name)
+                                    </td>
+                                    <td class="col-sm-2">
+                                        @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                                    </td>
+                                    <td class="col-sm-2">
+                                        @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary"> <i class="fa fa-arrow-left"></i> Back</a>
+
+<script src="~/Template/assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="~/Template/assets/js/bootstrap.min.js"></script>
+<!-- Metis Menu Js -->
+<script src="~/assets/js/jquery.metisMenu.js"></script>
+<!-- DATA TABLE SCRIPTS -->
+<script src="~/Template/assets/js/dataTables/jquery.dataTables.js"></script>
+<script src="~/Template/assets/js/dataTables/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#dataTables-deleteTicks').dataTable();
+    });
+</script>
+<!-- Custom Js -->
+<script src="~/Template/assets/js/custom-scripts.js"></script>

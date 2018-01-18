@@ -1,0 +1,129 @@
+﻿@*model jcamacho_bugtracker.Models.Project
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Manager.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Manager.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+    
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@
+
+@model jcamacho_bugtracker.Models.Project
+
+@{
+    ViewBag.Title = "Project Details";
+}
+
+<h2>@Html.DisplayFor(model => model.ProjectName)</h2>
+
+<h4>@Html.DisplayFor(model => model.CreatedDate)</h4>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </dd>
+
+        <dt>
+            Created
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            Updated
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedDate)
+        </dd>
+
+        <dt>
+            Assigned Users
+        </dt>
+
+        <dd>
+            @foreach (var projectUser in Model.Users)
+            {
+                @projectUser.DisplayName 
+                <br />
+            }
+        </dd>
+
+    </dl>
+</div>
+
+<ul class="list-inline">
+    <li>
+        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning"> <i class="fa fa-pencil"></i> Edit</a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary"> <i class="fa fa-arrow-left"></i> Back</a>
+    </li>
+</ul>
+

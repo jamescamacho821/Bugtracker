@@ -1,0 +1,38 @@
+﻿@model jcamacho_bugtracker.Views.Admin.AdminUpdateRolesViewModel
+
+@{
+    ViewBag.Title = "Manage Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="col-lg-6 col-sm-6 col-xs-12">
+    <h5 class="row-title before-lightcarbon"><i class="fa fa-check-square lightcarbon"></i>Manage Roles</h5>
+    <div class="widget">
+        <div class="widget-header bg-lightcarbon">
+            <span class="widget-caption">Select this user's roles</span>
+        </div>
+        <div class="widget-body">
+            <div>
+                @using (Html.BeginForm("UserRoles", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <strong>User</strong>
+                    <br />
+                    @Model.DisplayName
+                    <br />
+                    @Html.HiddenFor(model => model.Id, new { })
+                    <br />
+                    @Html.ListBox("SelectedRoles", Model.Roles, htmlAttributes: new { id = "mySelect", Style = "width:100%; height:128px" })
+                    <br />
+                    <br />
+                    <button class="btn btn-default" type="submit">Update Roles</button>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-default" href="@Url.Action("UserList", "Admin")"><i class="fa fa-user lightcarbon"></i>Return To User Management</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model jcamacho_bugtracker.Views.Projects.AdminUpdateProjectsViewModel
+
+@{
+    ViewBag.Title = "Manage Projects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="col-lg-6 col-sm-6 col-xs-12">
+    <h5 class="row-title before-lightcarbon"><i class="fa fa-check-square lightcarbon"></i>Manage Project</h5>
+    <div class="widget">
+        <div class="widget-header bg-lightcarbon">
+            <span class="widget-caption">Select this users projects</span>
+        </div>
+        <div class="widget-body">
+            <div>
+                @using (Html.BeginForm("UserProjects", "Projects", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <strong>User</strong>
+                    <br />
+                    @Model.DisplayName
+                    <br />
+                    @Html.HiddenFor(model => model.Id, new { })
+                    @Html.HiddenFor(model => model.DisplayName, new { })
+                    @Html.HiddenFor(model => model.FirstName, new { })
+                    @Html.HiddenFor(model => model.LastName, new { })
+
+                    <br />
+                    @Html.ListBox("SelectedProjects", Model.Projects, htmlAttributes: new { id = "mySelect", Style = "width:100%; height:128px" })
+                    <br />
+                    <br />
+                    <button class="btn btn-default" type="submit">Update Users</button>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="btn-group btn-group-justified">
+            <a class="btn btn-default" href="@Url.Action("UserList", "Projects")"><i class="fa fa-user lightcarbon"></i>Return To User Management</a>
+        </div>
+    </div>
+</div>

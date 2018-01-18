@@ -1,0 +1,96 @@
+﻿@model IEnumerable<jcamacho_bugtracker.Models.Project>
+
+@{
+    ViewBag.Title = "Projects List";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+{
+<p>
+    @Html.ActionLink("Create New Project", "Create")
+</p>
+}
+<div class="panel-group" id="projects">
+    @if (Model != null)
+    {
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSort })
+                </th>
+            </tr>
+        </table>
+        foreach (var item in Model)
+        {
+            string theHref = "#panel-element-projects" + item.Id;
+            string theId = "panel-element-projects" + item.Id;
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <table>
+                        <tr>
+                            <th>
+                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#projects" href=@theHref>@item.ProjectName</a>
+                            </th>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id=@theId class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-10 column">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h4>Members: (@item.Users.Count)</h4>
+                                        <ol>
+                                            @foreach (var usr in item.Users)
+                                            {
+                                                <li>
+                                                    @Html.ActionLink(usr.DisplayName, "Details/" + usr.Id, "ApplicationUsers")
+                                                </li>
+                                            }
+                                        </ol>
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h4>Tickets: (@item.Tickets.Count)</h4>
+                                        <ul>
+                                            @foreach (var tick in item.Tickets)
+                                            {
+                                                <li>
+                                                    @Html.ActionLink(tick.Title, "Index", "Tickets/Details/" + tick.Id)
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="btn btn-default btn-group btn-group-vertical">
+                                    <div class="row">
+                                        @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                                        {
+                                            <div class="col-md-4">
+                                                <span title="Edit Project"><em>@Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-pencil" })</em></span>
+                                                <span title="Remove Project"><em>@Html.ActionLink(" ","Delete", new { id = item.Id }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-remove" })</em></span>
+                                      @*          <span title="Assign User(s)"><em>@Html.ActionLink(" ", "UserList", "UserProject", new { id = item.ManagerId }, new { @class = "btn btn-default btn-primary glyphicon glyphicon-user" })</em></span>*@
+                              
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-4">  </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+    }
+</div>
